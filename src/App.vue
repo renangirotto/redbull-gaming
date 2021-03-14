@@ -36,10 +36,16 @@
               </button>
             </div>
             <footer class="card-footer">
-              <button class="checkin" :disabled="checkDate(card.date)">
+              <button
+                class="checkin"
+                @click="handleCheckin(card.experience)"
+                :disabled="checkDate(card.date)"
+              >
                 {{ checkDate(card.date) ? "Desafio Concluído" : "Check-in" }}
               </button>
-              <span class="checkin-text">168 check-ins</span>
+              <span v-if="expReady" class="checkin-text">{{
+                loadCheckin(card.experience)
+              }}</span>
             </footer>
           </div>
         </div>
@@ -58,6 +64,8 @@
 </template>
 
 <script>
+const fb = require("../firebaseConfig");
+
 import ModalExperience from "./components/modalExperience.vue";
 
 export default {
@@ -69,30 +77,36 @@ export default {
     return {
       cards: [
         {
+          experience: "one",
           image: "https://dummyimage.com/100x100.png",
           title: "NOME DA EXPERIENCIA",
           modal: "modal-1",
           date: "03/20/2021",
         },
         {
+          experience: "two",
           image: "https://dummyimage.com/100x100.png",
           title: "NOME DA EXPERIENCIA 2",
           modal: "modal-2",
           date: "03/27/2021",
         },
         {
+          experience: "three",
           image: "https://dummyimage.com/100x100.png",
           title: "NOME DA EXPERIENCIA 3",
           modal: "modal-3",
           date: "04/03/2021",
         },
         {
+          experience: "four",
           image: "https://dummyimage.com/100x100.png",
           title: "NOME DA EXPERIENCIA 4",
           modal: "modal-4",
           date: "04/10/2021",
         },
       ],
+      expArray: [],
+      expReady: false,
       modalActive: false,
       modalTarget: null,
     };
@@ -104,7 +118,7 @@ export default {
       //Bind template target
       this.modalTarget = target;
       //Overflow the body
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden";
     },
     closeModal() {
       //Deactivate modal
@@ -112,7 +126,7 @@ export default {
       //Bind template to null
       this.modalTarget = null;
       //unOverflow the body
-      document.body.style.overflow = ''
+      document.body.style.overflow = "";
     },
     checkDate(date) {
       //Check if experience date is older than today's date
@@ -122,6 +136,51 @@ export default {
         return false;
       }
     },
+    handleCheckin(exp) {
+      if (localStorage.getItem(exp) === null) {
+        //Get target object
+        let target = this.expArray.find((element) => element.id === exp);
+
+        //Get current total
+        let total = target.total + 1;
+        console.log('total', total)
+
+        //Update the selected experience in firesote
+        fb.expCollection.doc(exp).update({
+          total: total,
+        });
+
+        //Update the selected experience in data array
+        //Get index in the array
+        let objIndex = this.expArray.findIndex(obj => obj.id === exp);
+        //Update object in the array
+        this.expArray.splice(objIndex, 1, {id: exp, total: total})
+
+        //Set local stoage to block checkin in the same experience
+        localStorage.setItem(exp, true);
+      }
+    },
+    loadCheckin(exp) {
+      //Find element value on collection array
+      let target = this.expArray.find((element) => element.id === exp);
+      //Check if target is ready after async call
+      if (target != undefined) {
+        return `${target.total} check-ins`;
+      }
+    },
+  },
+  async mounted() {
+    //Handle firebase collection
+    await fb.expCollection.onSnapshot((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        let exp = doc.data();
+        exp.id = doc.id;
+        this.expArray.push(exp);
+      });
+    });
+
+    //Display markup after content load
+    this.expReady = true;
   },
 };
 </script>
