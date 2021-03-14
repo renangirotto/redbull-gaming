@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'Futura Com Book';
+    src: url('../fonts/FuturaCom-Bold.eot');
+    src: url('../fonts/FuturaCom-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/FuturaCom-Bold.woff2') format('woff2'),
+        url('../fonts/FuturaCom-Bold.woff') format('woff'),
+        url('../fonts/FuturaCom-Bold.ttf') format('truetype'),
+        url('../fonts/FuturaCom-Bold.svg#FuturaCom-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Futura Com Book';
+    src: url('../fonts/FuturaCom-Book.eot');
+    src: url('../fonts/FuturaCom-Book.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/FuturaCom-Book.woff2') format('woff2'),
+        url('../fonts/FuturaCom-Book.woff') format('woff'),
+        url('../fonts/FuturaCom-Book.ttf') format('truetype'),
+        url('../fonts/FuturaCom-Book.svg#FuturaCom-Book') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Futura Com Medium Condensed';
+    src: url('../fonts/FuturaCom-BoldCondensed.eot');
+    src: url('../fonts/FuturaCom-BoldCondensed.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/FuturaCom-BoldCondensed.woff2') format('woff2'),
+        url('../fonts/FuturaCom-BoldCondensed.woff') format('woff'),
+        url('../fonts/FuturaCom-BoldCondensed.ttf') format('truetype'),
+        url('../fonts/FuturaCom-BoldCondensed.svg#FuturaCom-BoldCondensed') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Futura Com';
+    src: url('../fonts/FuturaCom-Medium.eot');
+    src: url('../fonts/FuturaCom-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/FuturaCom-Medium.woff2') format('woff2'),
+        url('../fonts/FuturaCom-Medium.woff') format('woff'),
+        url('../fonts/FuturaCom-Medium.ttf') format('truetype'),
+        url('../fonts/FuturaCom-Medium.svg#FuturaCom-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Futura Com';
+    src: url('../fonts/FuturaCom-Light.eot');
+    src: url('../fonts/FuturaCom-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/FuturaCom-Light.woff2') format('woff2'),
+        url('../fonts/FuturaCom-Light.woff') format('woff'),
+        url('../fonts/FuturaCom-Light.ttf') format('truetype'),
+        url('../fonts/FuturaCom-Light.svg#FuturaCom-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
