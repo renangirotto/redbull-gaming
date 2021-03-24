@@ -3,12 +3,13 @@ import 'firebase/firestore'
 
 // firebase init
 const firebaseConfig = {
-    apiKey: "AIzaSyCXaohhn_Tac8qLLtT3iCuIMJAorbx-WHg",
-    authDomain: "redbull-gaming.firebaseapp.com",
-    projectId: "redbull-gaming",
-    storageBucket: "redbull-gaming.appspot.com",
-    messagingSenderId: "315149292248",
-    appId: "1:315149292248:web:d411202c243e589fd1bdad"
+    apiKey: "AIzaSyA0OWISYwVscOf8nluXLyRv4fsY998sSvQ",
+    authDomain: "redbull-gaming-74ca0.firebaseapp.com",
+    projectId: "redbull-gaming-74ca0",
+    storageBucket: "redbull-gaming-74ca0.appspot.com",
+    messagingSenderId: "309270432345",
+    appId: "1:309270432345:web:e36f1d877ac3bdf5633f48",
+    measurementId: "G-JJXZ7KQR9Y"
 };
 
 firebase.initializeApp(firebaseConfig)

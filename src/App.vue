@@ -2,13 +2,9 @@
   <div class="app" id="app" :class="{ 'no-scroll': modalActive }">
     <div class="container" :class="{ 'no-scroll': modalActive }">
       <header class="hero">
-        <h1>PROGRAMAÇÃO <br />DAS STREAM</h1>
+        <h1>CONHEÇA OS <br>DESAFIOS</h1>
         <p>
-          Red Bull vai dar asas à FURIA GG, <br class="hide-desktop" />com
-          desafios inusitados<br />
-          que vão transformar grandes <br class="hide-desktop" />streamings
-          <br class="hide-mobile" />
-          em experiências <br class="hide-desktop" />ainda mais surpreendentes.
+          Fique por dentro da programação, dê um check-in no seu desafio <br>preferido e role para baixo para se cadastrar e ter a chance de ganhar <br>aaasas pra acompanhar as transmissões.
         </p>
       </header>
       <section>
@@ -19,11 +15,12 @@
             :key="index"
             class="card"
             :class="{ disabled: checkDate(card.date) }"
+            :ref="card.modal"
           >
             <div class="card-body">
               <div
                 class="card-image"
-                :style="{ backgroundImage: `url(${card.image})` }"
+                :class="card.image"
               >
                 <h3 class="card-title">{{ card.title }}</h3>
               </div>
@@ -32,20 +29,23 @@
                 @click="openModal(card.modal)"
                 :disabled="checkDate(card.date)"
               >
-                {{ checkDate(card.date) ? "Veja como foi" : "Saiba mais" }}
+                Saiba mais
               </button>
             </div>
             <footer class="card-footer">
-              <button
+              <a
+                :href="card.file"
                 class="checkin"
+                :class="{ disabled: !card.download }"
                 @click="handleCheckin(card.experience)"
-                :disabled="checkDate(card.date)"
+                download
               >
-                {{ checkDate(card.date) ? "Desafio Concluído" : "Check-in" }}
-              </button>
+                {{ checkDate(card.date) ? "Desafio concluído" : "Check-in" }}
+              </a>
               <span v-if="expReady" class="checkin-text">{{
                 loadCheckin(card.experience)
-              }}</span>
+              }}
+              check-ins <br>já realizados</span>
             </footer>
           </div>
         </div>
@@ -77,32 +77,40 @@ export default {
     return {
       cards: [
         {
-          experience: "one",
-          image: "https://dummyimage.com/100x100.png",
-          title: "NOME DA EXPERIENCIA",
-          modal: "modal-1",
-          date: "03/20/2021",
+          experience: "flex-em-furia",
+          image: "flex-em-furia",
+          title: "FLEX EM FURIA",
+          modal: "modal-flex-em-furia",
+          date: "03/26/2021, 20:00:00",
+          file: "https://firebasestorage.googleapis.com/v0/b/redbull-gaming-74ca0.appspot.com/o/Red%20Bull%20Desafios%20Extreaming%20-%20Flex%20em%20Furia.ics?alt=media&token=f57caad6-5c8a-44eb-a191-5f7af7e7325a",
+          download: true
         },
         {
-          experience: "two",
-          image: "https://dummyimage.com/100x100.png",
-          title: "NOME DA EXPERIENCIA 2",
-          modal: "modal-2",
-          date: "03/27/2021",
+          experience: "among-us-5head",
+          image: "among-us-5head",
+          title: "AMONG US 5HEAD",
+          modal: "modal-among-us-5head",
+          date: "04/01/2021, 19:00:00",
+          file: "https://firebasestorage.googleapis.com/v0/b/redbull-gaming-74ca0.appspot.com/o/Red%20Bull%20Desafios%20Extreaming%20-%20Among%20Us%205Head_1-4.ics?alt=media&token=800ced54-c004-44be-9c3f-d9c11f1b66d9",
+          download: true
         },
         {
-          experience: "three",
-          image: "https://dummyimage.com/100x100.png",
-          title: "NOME DA EXPERIENCIA 3",
-          modal: "modal-3",
-          date: "04/03/2021",
+          experience: "furia-em-campo",
+          image: "furia-em-campo",
+          title: "FURIA EM CAMPO",
+          modal: "modal-furia-em-campo",
+          date: "04/09/2021, 20:00:00",
+          file: "https://firebasestorage.googleapis.com/v0/b/redbull-gaming-74ca0.appspot.com/o/Red%20Bull%20Desafios%20Extreaming%20-%20Furia%20em%20Campo.ics?alt=media&token=a03e0c42-108e-44a6-ac0a-322a5749dab8",
+          download: true
         },
         {
-          experience: "four",
-          image: "https://dummyimage.com/100x100.png",
-          title: "NOME DA EXPERIENCIA 4",
-          modal: "modal-4",
-          date: "04/10/2021",
+          experience: "olimpiadas-do-fallzao",
+          image: "olimpiadas-do-fallzao",
+          title: "OLIMPÍADAS DO FALLZÃO",
+          modal: "modal-olimpiadas-do-fallzao",
+          date: "04/16/2021, 20:00:00",
+          file: "https://firebasestorage.googleapis.com/v0/b/redbull-gaming-74ca0.appspot.com/o/Red%20Bull%20Desafios%20Extreaming%20-%20Olimpi%CC%81adas%20do%20Fallza%CC%83o.ics?alt=media&token=57e9096f-7075-41a4-8e5e-d295df862aaf",
+          download: true
         },
       ],
       expArray: [],
@@ -136,6 +144,13 @@ export default {
         return false;
       }
     },
+    checkDownload(exp) {
+      if(localStorage.getItem(exp) === null) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     handleCheckin(exp) {
       if (localStorage.getItem(exp) === null) {
         //Get target object
@@ -143,7 +158,6 @@ export default {
 
         //Get current total
         let total = target.total + 1;
-        console.log('total', total)
 
         //Update the selected experience in firesote
         fb.expCollection.doc(exp).update({
@@ -156,6 +170,15 @@ export default {
         //Update object in the array
         this.expArray.splice(objIndex, 1, {id: exp, total: total})
 
+        this.cards.map(element => {
+          if(element.experience === exp) {
+            element.download = false
+            return element
+          } else {
+            return element
+          }
+        })
+
         //Set local stoage to block checkin in the same experience
         localStorage.setItem(exp, true);
       }
@@ -165,7 +188,7 @@ export default {
       let target = this.expArray.find((element) => element.id === exp);
       //Check if target is ready after async call
       if (target != undefined) {
-        return `${target.total} check-ins`;
+        return `${target.total}`;
       }
     },
   },
@@ -179,6 +202,16 @@ export default {
       });
     });
 
+    //Check download state
+    this.cards.map(element => {
+      if(localStorage.getItem(element.experience) != null) {
+        element.download = false
+        return element
+      } else {
+        return element
+      }
+    })
+
     //Display markup after content load
     this.expReady = true;
   },
@@ -191,10 +224,12 @@ export default {
 }
 
 .app {
+  width: 100%;
   box-sizing: border-box;
   min-height: 100vh;
-  padding: 85px 24px 60px;
+  padding: 32px 24px 100px;
   position: relative;
+  margin: 0 auto;
   background: rgba(251, 251, 251, 1);
   background: -moz-linear-gradient(
     top,
@@ -228,6 +263,10 @@ export default {
     rgba(255, 255, 255, 1) 50%
   );
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbfbfb', endColorstr='#ffffff', GradientType=0 );
+
+  @media (min-width: 992px) {
+    width: auto;
+  }
 
   &::before {
     content: "";
@@ -277,44 +316,47 @@ export default {
   margin: 0 auto;
 
   @media (min-width: 992px) {
-    max-width: 1416px;
+    max-width: 1280px;
   }
 }
 
 .hero {
-  margin-bottom: 56px;
+  margin-bottom: 50px;
   text-align: center;
   color: #000000;
 
   @media (min-width: 992px) {
-    margin-bottom: 72px;
+    margin-bottom: 52px;
   }
 
   h1 {
     display: inline-block;
-    padding: 32px 36px;
-    margin: 0 auto 56px;
+    padding: 20px;
+    margin: 0 auto 32px;
     font-family: "Futura Com Medium Condensed";
     font-weight: bold;
-    font-size: 83px;
-    line-height: 83px;
+    font-size: 48px;
+    line-height: 60px;
     text-align: center;
     text-transform: uppercase;
     color: #14192c;
     background-image: url("./assets/images/border-title-mobile.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 570px 230px;
+    background-size: 262px 156px;
 
-    @media (min-width: 992px) {
-      margin-bottom: 52px;
+    @media (min-width: 768px) {
+      padding: 32px 36px;
+      font-size: 72px;
+      line-height: 72px;
+      background-size: 412px 202px;
     }
 
     @media (min-width: 1200px) {
       padding: 32px 24px;
-      font-size: 100px;
+      font-size: 72px;
       background-image: url("./assets/images/border-title.png");
-      background-size: 1147px 147px;
+      background-size: 662px 137px;
     }
 
     br {
@@ -327,14 +369,14 @@ export default {
   p {
     font-family: "Futura Com";
     font-weight: 500;
-    font-size: 38px;
-    line-height: 50px;
+    font-size: 20px;
+    line-height: 32px;
     text-align: center;
     color: #14192c;
 
-    @media (min-width: 992px) {
-      font-size: 42px;
-      line-height: 58px;
+    @media (min-width: 768px) {
+      font-size: 24px;
+      line-height: 40px;
     }
   }
 }
@@ -343,10 +385,14 @@ export default {
   margin-bottom: 35px;
   font-family: "Futura Com Medium Condensed";
   font-weight: bold;
-  font-size: 58px;
+  font-size: 40px;
   text-align: center;
   text-transform: uppercase;
   color: #14192c;
+
+  @media (min-width: 992px) {
+    font-size: 58px;
+  }
 }
 
 .cards {
@@ -354,7 +400,7 @@ export default {
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
 
   @media (min-width: 992px) {
     flex-direction: row;
@@ -371,41 +417,49 @@ export default {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 318px;
-    margin-bottom: 36px;
+    max-width: 272px;
+    margin-bottom: 24px;
 
-    @media (min-width: 992px) {
-      max-width: 336px;
-    }
+    // @media (min-width: 768px) {
+    //   max-width: 318px;;
+    // }
+
+    // @media (min-width: 992px) {
+    //   max-width: 336px;
+    // }
 
     @media (min-width: 1400px) {
       margin-bottom: 0;
     }
 
-    button {
+    a, button {
       display: inline-block;
       width: 100%;
-      height: 68px;
+      height: 48px;
       border: none;
       border-radius: 36px;
       font-family: "Futura Com";
       font-weight: 500;
-      font-size: 34px;
+      font-size: 28px;
       color: #ffffff;
       background: transparent;
       cursor: pointer;
-
-      @media (min-width: 992px) {
-        height: 72px;
-      }
 
       &.plus {
         background-color: #1f3574;
       }
 
       &.checkin {
-        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1  0px;
+        text-decoration: none;
         background-color: #cf2148;
+
+        &.disabled {
+          pointer-events: none;
+        }
       }
     }
 
@@ -417,11 +471,15 @@ export default {
       background-image: url("./assets/images/border-card.png");
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 318px 391px;
+      background-size: 272px 362px;
 
-      @media (min-width: 992px) {
-        background-size: 336px 410px;
-      }
+      // @media (min-width: 768px) {
+      //   background-size: 318px 391px;
+      // }
+
+      // @media (min-width: 992px) {
+      //   background-size: 336px 410px;
+      // }
     }
 
     .card-image {
@@ -441,22 +499,43 @@ export default {
         max-width: 308px;
         height: 286px;
       }
+
+      &.flex-em-furia {
+        background-image: url('./assets/images/flex-em-furia.jpg');
+      }
+
+      &.among-us-5head {
+        background-image: url('./assets/images/among-us-5head.jpg');
+      }
+
+      &.furia-em-campo {
+        background-image: url('./assets/images/furia-em-campo.jpg');
+      }
+      
+      &.olimpiadas-do-fallzao {
+        background-image: url('./assets/images/olimpiadas-do-fallzao.jpg');
+      }
     }
 
     .card-title {
       font-family: "Futura Com Medium Condensed";
       font-weight: bold;
       font-style: italic;
-      font-size: 53px;
-      line-height: 53px;
+      font-size: 44px;
+      line-height: 48px;
       text-transform: uppercase;
       color: #ffffff;
       -webkit-text-stroke: 1px black;
 
-      @media (min-width: 992px) {
-        font-size: 56px;
-        line-height: 56px;
-      }
+      // @media (min-width: 768px) {
+      //   font-size: 53px;
+      //   line-height: 53px;
+      // }
+
+      // @media (min-width: 992px) {
+      //   font-size: 54px;
+      //   line-height: 56px;
+      // }
     }
 
     .card-footer {
@@ -468,18 +547,23 @@ export default {
       .checkin-text {
         font-family: "Futura Com";
         font-weight: 500;
-        font-size: 22px;
+        font-size: 20px;
+        line-height: 1.5;
       }
     }
 
     &.disabled {
       order: 1;
 
+      .card-image {
+        filter: grayscale(100%);
+      }
+
       .card-body {
         background-image: url("./assets/images/border-card-soft.png");
       }
 
-      button {
+      a, button {
         &.plus {
           background-color: #818080;
         }
@@ -488,6 +572,10 @@ export default {
           font-size: 29px;
           background-color: #a1a0a0;
         }
+      }
+
+      a {
+        pointer-events: none;
       }
     }
   }
@@ -499,10 +587,10 @@ export default {
   align-items: center;
   font-family: "Futura Com";
   font-weight: 500;
-  font-size: 28px;
+  font-size: 20px;
 
-  @media (min-width: 992px) {
-    font-size: 33px;
+  img {
+    width: 56px;
   }
 
   span {
